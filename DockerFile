@@ -1,0 +1,23 @@
+FROM python:3.10
+RUN apt-get update && apt-get install -y \
+        libpq-dev \
+        libpng-dev \
+        libzip-dev \
+        libmcrypt-dev \
+        curl \
+        openssl \
+        zip \
+        unzip \
+        git \
+        cron 
+WORKDIR /home        
+COPY ./passivbot passivbot 
+RUN cd passivbot
+RUN pip install -r /home/passivbot/requirements.txt
+RUN cd /home
+COPY ./pbgui /home/pbgui
+RUN cd pbgui
+RUN pip install -r /home/pbgui/requirements.txt
+COPY ./start.sh start.sh
+RUN chmod 755 start.sh
+EXPOSE 8501
